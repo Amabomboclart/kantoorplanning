@@ -1,0 +1,56 @@
+locatie:
+    path: /locatie/{year}/{week}
+    controller: 'App\Controller\LocatieController::mijnLocatie'
+    requirements:
+
+login:
+    path: /login
+    controller: 'App\Controller\LoginController::login'
+
+index:
+    path: /
+    controller: 'App\Controller\HomeController::index'
+
+dashboard:
+    path: /dashboard
+    controller: 'App\Controller\HomeController::dashboard'
+
+azure_oauth_callback:
+    path: /login/azure/callback
+    controller: 'App\Controller\SecurityController::onAzureOAuthSuccess'
+
+logout:
+    path: /logout
+    controller: 'App\Controller\HomeController::logout'
+
+getUser:
+    path: /user
+    controller: 'App\Controller\LocatieController::getUser'
+
+handleFormSubmissionLocatie:
+    path: /formhandlingLocatie/{currentYear}/{currentWeek}
+    controller: 'App\Controller\LocatieController::handleFormSubmissionLocatie'
+
+
+handleFormSubmissionDefaultLocatie:
+    path: /FormHandlingDefaultLocatie
+    controller: 'App\Controller\LocatieController::handleFormSubmissionDefaultLocatie'
+
+colleagues:
+    path: /colleagues/{year}/{week}
+    controller: 'App\Controller\ReadController::colleagues'
+
+checkCurrentLocation:
+    path: /checkCurrentLocation
+    controller: 'App\Controller\locatieController::currentlocation'
+
+export_to_excel:
+    path: /export_to_excel
+    controller: 'App\Controller\ReadController::exportToExcel'
+
+app_error404:
+    path: '{catchall}'
+    controller: 'App\Controller\Error404Controller::index'
+    requirements:
+        catchall: '.*'
+

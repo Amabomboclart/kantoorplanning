@@ -1,0 +1,23 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        users_in_memory: { memory: null }
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+            remember_me:
+                secret: '%env(APP_SECRET)%'
+                lifetime: 86400
+
+        main:
+            lazy: true
+            provider: users_in_memory
+            form_login:
+                check_path: azure_oauth_callback
+
+
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+{% set ThisYear = "now"|date("Y") %}
+{% set ThisWeek = "now"|date("W") %}
+<head>
+    <title>kantoorplanning - Locatie-invullen</title>
+</head>
+
+<div class="d-flex flex-column flex-md-row align-items-center bg-white border-bottom box-shadow">
+    <nav class="container-fluid pt-3">
+        <div class="row">
+            <div class="col-2" id="leftColHeader">
+                    <a href="{{ path('index') }}" class="nav-link"><img src="{{ asset('images/Develto_App_icon_Diap.png') }}" class="logo-header" style="bottom: 15px;" alt="Oops!"></a>
+            </div>
+            <div class="col-10 col-sm-8">
+                {% if app.request.attributes.get('_route') == 'locatie' %}
+                    <div class="col-12 justify-content-center h1">
+                        <a class="idn" href="{{ path('locatie', {'year': previousWeek.0, 'week': previousWeek.1}) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="38" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16" style="vertical-align: text-top">
+                                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                            </svg>
+                        </a>
+                        {{ currentYear }}
+                        Week:
+                        {{ currentWeek }}
+                        <a class="idn" href="{{ path('locatie', {'year': nextWeek.0, 'week': nextWeek.1}) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="38" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16" style="vertical-align: text-top">
+                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                {% elseif app.request.attributes.get('_route') == 'colleagues' %}
+                    <div class="col-12 justify-content-center h1">
+                        <a class="idn" href="{{ path('colleagues', {'year': previousWeek.0, 'week': previousWeek.1}) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height='38' fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16" style="vertical-align: text-top">
+                                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                            </svg>
+                        </a>
+                        {{ currentYear }}
+                        Week:
+                        {{ currentWeek }}
+                        <a class="idn" href="{{ path('colleagues', {'year': nextWeek.0, 'week': nextWeek.1}) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="38" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16" style="vertical-align: text-top">
+                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                {% else %}
+
+                {% endif %}
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+
+
+    </nav>
+
+</div>

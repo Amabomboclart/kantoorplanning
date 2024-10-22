@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}kantoorplanning - colleagues{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" id="error-alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error2') %}
+    <div class="alert alert-warning" id="error2-alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col">
+            <a onclick="openPopup()" class="btn btn-border-primary" id="export-btn">Export</a>
+        </div>
+    </div>
+        <div id="overlay" class="overlay">
+        <div class="popup col-lg-4 col-md-8 col-sm-10">
+            <div class="row">
+                <div class="background-primary" id="popup-header">
+                    Location export
+                </div>
+            </div>
+            <div class="row" id="textDiv">
+                <div class="text">
+                    This export will return an Excel file containing all the data from the dates between the selected start and end date. This might take some time.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form">
+                        {{ form_start(form) }}
+                        {{ form_row(form.startDate, {'attr': {'class': 'datepicker'}}) }}
+                        <br>
+                        {{ form_row(form.endDate, {'attr': {'class': 'datepicker'}}) }}
+                        <br>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="table-responsive">
+        <table id="colleaguesTable" class="table table-striped table-bordered table-hover" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <thead>
+            <tr class="card-header background-primary text-white mt-2" id="tableHead">
+                <th>User</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+            </thead>
+            <tbody>
+            {# Display $user from session at the top #}
+            <tr class="userFS">
+                <td class="userFS-profile background-primary set-value-cell" >
+                    <div>
+                        {% if loggedUser.profile %}
+                            <img src="{{ loggedUser.profile }}" alt="{{ loggedUser.name }}" width="50" height="50" class="pfp">
+                        {% endif %}
+                        {{ loggedUser.name }}
+                    </div>
+                    </td>
+                {% for dayOfWeek in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+                    <td class="trow userFS-profile">
+                        {% if loggedUser.locations is defined and loggedUser.locations[loop.index0] is defined %}
+                            {{ loggedUser.locations[loop.index0] }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+            {# Display other users #}
+            {% for user in users %}
+                <tr>
+                    <td>
+                        {% if user.profile %}
+                            <img src="{{ user.profile }}" alt="{{ user.name }}" width="50" height="50" class="pfp">
+                        {% endif %}
+                        {{ user.name }}
+                    </td>
+                    {% for dayOfWeek in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+                        <td class="trow">
+                            {% if user.locations is defined and user.locations[loop.index0] is defined %}
+                                {{ user.locations[loop.index0] }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <style>
+        .card{
+            margin-bottom: 50px;
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0; /* Adjust border radius for the mountain effect */
+            color: black;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+        }
+
+        .card-header img {
+            width: 50px; /* Adjust the width of the profile picture */
+            border-radius: 50%; /* Make the profile picture circular */
+            position: absolute;
+            top: -45px; /* Adjust the top position to overlap with the mountain */
+            left: 50%; /* Center the profile picture horizontally */
+            transform: translateX(-50%); /* Center the profile picture horizontally */
+        }
+
+        .card-body {
+            text-align: center;
+        }
+    </style>
+
+    <div class="row" id="userCards">
+        {% for user in [loggedUser] %}
+            <div class="col-md-6 cardColumn">
+                <div class="card cardUser shadow" id="cardLoggedUser">
+                    <div class="card-header background-primary text-white">
+                        {% if user.profile %}
+                            <img src="{{ user.profile }}" alt="{{ user.name }}">
+                        {% endif %}
+                            {{ user.name }}
+                    </div>
+                    <div class="card-body">
+                        <div class="choice-name">
+                            {% for dayOfWeek in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+                                <div class="row">
+
+                                    <div class="col-6 day">
+                                    <strong>{{ dayOfWeek }}:</strong>
+                                    </div>
+                                    {% if user.locations is defined and user.locations[loop.index0] is defined %}
+                                        <div class="col-6 locations">
+                                        {{ user.locations[loop.index0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% for user in users %}
+            <div class="col-md-6 cardColumn">
+                <div class="card cardUser shadow" id="cardUser">
+                    <div class="card-header background-primary text-white">
+                        {% if user.profile %}
+                            <img src="{{ user.profile }}" alt="{{ user.name }}">
+                        {% endif %}
+                            {{ user.name }}
+                    </div>
+                    <div class="card-body naming">
+                        <div class="choice-name">
+                            {% for dayOfWeek in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+                                <div class="row">
+                                    <div class="col-6 day">
+                                        <strong>{{ dayOfWeek }}:</strong>
+                                    </div>
+                                    {% if user.locations is defined and user.locations[loop.index0] is defined %}
+                                        <div class="col-6 locations">
+                                            {{ user.locations[loop.index0] }}
+                                        </div>
+                                    {% else %}
+                                        Not available
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <script src="{{ asset('js/succes.js') }}"></script>
+    <script src="{{ asset('js/export.js') }}"></script>
+    <script src="{{ asset('js/read.js') }}"></script>
+{% endblock %}

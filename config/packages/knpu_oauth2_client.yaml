@@ -1,0 +1,11 @@
+knpu_oauth2_client:
+    clients:
+        azure:
+            type: azure
+            client_id: '2310db5a-d2c4-474e-bfe3-4250406009c2'
+            client_secret: '~uz8Q~YHIl1hlM8AhOvCH47kktVPPMCR52vn-bPL'
+            redirect_route: 'azure_oauth_callback'
+            redirect_params: {}
+            scope: ['openid', 'profile', 'email', 'user.read']
+            default_end_point_version: '2.0'
+            tenant: '1f97e02b-75b5-4771-bc1f-81b956bf931c'

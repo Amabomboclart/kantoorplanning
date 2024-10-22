@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    kantoorplanning - Locatie-invullen
+{% endblock %}
+
+{% block body %}
+
+    <div class="container" id="content">
+    <div>
+        <div class="row">
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger" id="error-alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success" id="success-alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('error2') %}
+                <div class="alert alert-warning" id="error2-alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('error3') %}
+                <div class="alert alert-warning" id="error3-alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <a>
+                <button class="btn btn-border-primary" id="standardValuesButton" onclick="openPopup()">Standard values</button>
+            </a>
+            <div class="overlay" id="overlayDefaultValue"></div>
+            <div class="col-10">
+                <div class="popup" id="popup-defaultValue">
+                    <div class="card-header background-primary border-dark" id="cardHeaderDefaultValue">
+                        <h5 class="text-white mt-2" id="selectedWeekDay">Submit your location</h5>
+                    </div>
+                        <div class="text" id="textDefaultValue">
+                            This function will set a standard value for the days u submit a location for. This way if nothing is submitted for a certain day the standard value will be set for you until you submit something else.
+                        </div>
+                    <div class="form-container mt-5">
+                        {{ form_start(formDefaultValue) }}
+                        <fieldset>
+                            <div id="weekPlannerModalPopup" class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        {% for row in formDefaultValue %}
+                                            {% if row.children %}
+                                                <div class="col">
+                                                    <div class="card" id="card">
+                                                        {% set currentDayDate = weekDates[loop.index0]|date('l') %}
+                                                        <div class="card-header background-primary">
+                                                            {{ currentDayDate }}
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            {% for test in row.children %}
+                                                                <div class="">
+                                                                    <div class="choice-name">
+                                                                        {{ form_widget(test) }} {{ form_label(test) }}
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        {{ form_end(formDefaultValue) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-container mt-5">
+        {{ form_start(form) }}
+        <fieldset>
+            <div id="weekPlannerModal" class="card">
+                <div class="card-header background-primary border-dark" id="cardHeaderLocatie">
+                    <h5 class="text-white mt-2" id="selectedWeekDay">Submit your location</h5>
+                </div>
+                <div class="card-body bordered" id="cardLocatie">
+                    <div class="row">
+                        {{ form_start(form) }}
+                        {% for row in form %}
+                            {% if row.children %}
+                                <div class="col">
+                                    <div class="card">
+                                        {% set currentDayDate = weekDates[loop.index0]|date('l d-m') %}
+                                        <div class="card-header">
+                                            {{ currentDayDate }}
+                                        </div>
+
+                                        <div class="card-body">
+                                            {% for test in row.children %}
+                                                <div class="">
+                                                    <div class="choice-name">
+                                                        {{ form_widget(test) }} {{ form_label(test) }}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        {{ form_end(form) }}
+    </div>
+    <script src="{{ asset('js/succes.js') }}"></script>
+    <script>
+        var allUserLocations = {{ allUserLocations|json_encode|raw }};
+    </script>
+{% endblock %}
